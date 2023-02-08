@@ -1,3 +1,5 @@
+// Lite NT v_9.0
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -16,7 +18,7 @@ class System_out {
     public: 
         /*
          Put text in the screen 
-         Since: 1.0
+         Since: 1.0 updated 2.0
          Example: out.print();
          It prints the %text% variable with the %options%.
          Options:
@@ -36,7 +38,9 @@ class System_out {
             } else if(options == "%p") {
                 system("CLS");
                 cout << text << "\n";
-            }
+            } else {
+            throw new exception;
+        }
         }
 };
 
@@ -103,7 +107,7 @@ class System_in {
     public:
         /*
          Ask for text 
-         Since: 1.0
+         Since: 1.0 updated 2.0
          Example: String username = in.scani("%s");
          It make a user input with the %options% configuration
          options:
@@ -117,12 +121,14 @@ class System_in {
                 getline(cin, ret);
             } else if(options == "%n") {
                 getline(cin, ret);
-            }
+            } else {
+            throw new exception;
+        }
             return ret;
         }
         /*
          Ask for password 
-         Since: 1.0
+         Since: 1.0 updated 2.0
          Example: String password = in.scanipass("%s");
          It make a user input with the char 250 and its configurations.
          options:
@@ -136,7 +142,9 @@ class System_in {
                 ret = takePasswdFromUser();
             } else if(options == "%n") {
                 ret = takePasswdFromUser();
-            }
+            } else {
+            throw new exception;
+        }
             return ret;
         } 
 };
@@ -153,7 +161,7 @@ class Window {
          Go to the determinate position 
          Since: 1.0
          Example: window.goToXY(4,4);
-         Put the cursor in the detrminated position of the console
+         Put the cursor in the determinated position of the console
         */
         void goToXY(int x, int y) {
     COORD c;
@@ -216,6 +224,14 @@ class Window {
             char colors = getBackgroundColor + getForegroundColor;
             return to_string(colors);
         }
+        /*
+         Waits the miliseconds that are set in the %time% parameter
+         Since: 2.0
+         Example: window.wait(1000);
+        */
+       void wait(long time) {
+        Sleep(time);
+       }
 };
 
 /*
@@ -262,7 +278,7 @@ class File {
        } 
        /*
          Get the size of the file in the determinate way
-         Since: 1.0
+         Since: 1.0 updated 2.0
          Example: float foo = file.size("foo.txt", file.BYTES);
          Return: float
         */
@@ -275,10 +291,135 @@ class File {
             return readFile(filename).length() / 100000000;
         } else if(op == 3) {
             return readFile(filename).length() / 100000000000;
+        } else {
+            throw new exception;
         }
        };
        int BYTES = 0;
     int MEGABYTES = 1;
     int GIGABYTES = 2;
     int TERABYTES = 3;
+};
+
+/*
+         Class Measure
+         Since: 2.0
+         Example: Measure measure;
+         The class to calculate data types
+        */
+class Measure {
+    public:
+    /*
+         Return the ASCII caracter of the determinated int
+         Since: 2.0
+         Example: char c100 = measure.int__char(100);
+         Return: char
+        */
+        char int__char(int character) {
+            return (char) character;
+        }/*
+         Return the int of the determinated ASCII character
+         Since: 2.0
+         Example: int n100 = measure.char__int('d');
+         Return: int
+        */
+        char char__int(char character) {
+            return (int) character;
+        }
+        /*
+         Return the millisecons of the determinated seconds;
+         Since: 2.0
+         Example: long 2segs = measure.toMilliseconds(2);
+         Return: long
+        */
+        long toMillisecons(long seconds) {
+            return seconds * 1000;
+        }
+};
+
+/*
+ Class: EventHandler
+ Since: 2.0
+ Example: EventHandler event;
+ The class for event handling
+ */
+class EventHandler {
+    public:
+    int LEFT_KEY = 0;
+    int RIGHT_KEY = 1;
+ /*
+         Is a array with the mouse x and y position
+         Since: 2.0
+         Example: int x = event.mouXY[0], y = event.mou[1];
+         Return: int[2]
+        */    
+        int mouXY[2] = {0,0}; /*
+         Update the variable mouXY
+         Since: 2.0
+         Example: event.updateMousePosition();
+        */
+        void updateMousePosition() {
+            POINT p;
+            GetCursorPos(&p);
+            mouXY[0] = p.x;
+            mouXY[1] = p.y;
+        }
+         /*
+         Return if the determinated key of the mouse was pressed.
+         Since: 2.0
+         Example: bool leftMousePressed = event.isClicked(event.LEFT_KEY);
+         Return: bool
+         Options:
+         event.LEFT_KEY -> The left key of the button
+         event.RIGHT_KEY -> The right key of the button
+        */
+        boolean isClicked(int option) {
+            if(option == 0 && GetAsyncKeyState(VK_LBUTTON) & 1) {
+                return true;
+            } else if(option == 2 && GetAsyncKeyState(VK_RBUTTON) & 1) {
+                return false;
+            } else {
+                throw new exception;
+                return false;
+            }
+            return false;
+        } 
+         /*
+         Return the character that was pressed in the keyboard
+         Since: 2.0
+         Example: char keypressed = event.getKeyPressed();
+         Return: char or int
+        */
+        char getKeyPressed() {
+            if(kbhit()) {
+                return getch();
+            }
+            return '@';
+        }
+         /*
+         Return if any key was pressed
+         Since: 2.0
+         Example: bool ispressed = event.isKeyPressed();
+         Return: bool
+        */
+        boolean isKeyPressed() {
+            if(kbhit()) {
+                return true;
+            }
+            return false;
+        }
+         /*
+         Return true if the determinated key was pressed
+         Since: 2.0
+         Example: bool isDpressed = event.isDKeyPressed('d');
+         Return: bool
+        */boolean isDKeyPressed(char dkey) {
+            if(kbhit()) {
+                if(dkey == (char) getch()) {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
 };
