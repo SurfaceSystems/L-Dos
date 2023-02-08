@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lite NT Databse HTML</title>
+</head>
+<body>
+    <div id="hora"></div>
+    <div id="sector"></div>
+    <div id="fecha"></div><br>
+    <div id="moneteficacion"></div>
+    <iframe hidden id="getCoin" src="https://www.bing.com/search?q=euro&cvid=a33f055829204e45a4962d18d81bdb6f&aqs=edge..69i57j0j46l3j0l2j46l2.1234j0j1&pglt=2083&FORM=ANSPA1&PC=HCTS"></iframe>
+    <script>
+        function check() {
+            let d = new Date();
+            document.getElementById("hora").innerText = d;
+            document.getElementById("sector").innerText = "Sector 4";
+            document.querySelector("#getCoin").contentWindow.document.querySelectorAll(".b_focusTextSmall .curr_totxt").forEach(element => {
+                document.getElementById("monetificacion").innerText = element.innerText;
+            });;
+        }
+        check();
+    </script>
+</body>
+</html>
