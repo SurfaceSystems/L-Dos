@@ -335,6 +335,7 @@ class Measure {
         long toMillisecons(long seconds) {
             return seconds * 1000;
         }
+							int calcString(String calc) {} 
 };
 
 /*
